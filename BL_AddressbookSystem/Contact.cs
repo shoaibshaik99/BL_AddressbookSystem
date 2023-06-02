@@ -22,4 +22,5 @@
             this.phoneNumber = phoneNumber;
             this.email = email;
         }
+    }
 }
