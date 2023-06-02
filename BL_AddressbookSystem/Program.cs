@@ -8,8 +8,10 @@
             AddressBook addressBook = new AddressBook();
             addressBook.AddContact();
             addressBook.DisplayContact();
-            addressBook.EditContact();
-            addressBook.DisplayContact();
+            //addressBook.EditContact();
+            //addressBook.DisplayContact();
+            addressBook.DeleteContact();
+            addressBook.DisplayContact();   
         }
     }
 }

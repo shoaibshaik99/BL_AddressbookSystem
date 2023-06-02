@@ -1,10 +1,8 @@
-﻿using System.Diagnostics.Contracts;
-
-namespace BL_AddressbookSystem
+﻿namespace BL_AddressbookSystem
 {
     internal class AddressBook
     {
-        public Contact contact;
+        public Contact? contact;
         
         public void AddContact()
         {
@@ -85,5 +83,31 @@ namespace BL_AddressbookSystem
                 Console.WriteLine("Contact not found.");
             }
         }
+
+        public void DeleteContact()
+        {
+            if (contact != null)
+            {
+                Console.WriteLine("Enter the first name of the contact you want to delete:");
+                string firstNameToEdit = Console.ReadLine();
+                Console.WriteLine("Enter the last name of the contact you want to delete:");
+                string lastNameToEdit = Console.ReadLine();
+
+                if (contact != null && contact.firstName == firstNameToEdit && contact.lastName == lastNameToEdit)
+                {
+                    this.contact = null;
+                    Console.Write("\nDeleted Successfully!\n");
+                }
+                else
+                {
+                    Console.Write("\nNo such person found!\n");
+                }
+            }
+            else
+            {
+                Console.Write("\nNo such person found!\n");
+            }
+        }
+
     }
 }
