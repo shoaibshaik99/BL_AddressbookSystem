@@ -2,14 +2,27 @@
 {
     internal class AddressBook
     {
-        public Contact? contact;
-        
+        public List<Contact> contacts;
+
+        public AddressBook()
+        {
+            contacts = new List<Contact>();
+        }
+
         public void AddContact()
         {
             Console.WriteLine("Enter the contact's first name:");
             string firstName = Console.ReadLine();
             Console.WriteLine("Enter the contact's last name:");
             string lastName = Console.ReadLine();
+
+            Contact existingContact = SearchContact(firstName, lastName);
+            if (existingContact != null)
+            {
+                Console.WriteLine("A contact with the same first and last name already exists. Please try again with a different name.");
+                return;
+            }
+
             Console.WriteLine("Enter the contact's address:");
             string address = Console.ReadLine();
             Console.WriteLine("Enter the contact's city:");
@@ -23,21 +36,29 @@
             Console.WriteLine("Enter the contact's email:");
             string email = Console.ReadLine();
 
-            this.contact = new Contact(firstName, lastName, address, city, state, zipCode, phoneNumber, email);
+            Contact newContact = new Contact(firstName, lastName, address, city, state, zipCode, phoneNumber, email);
+            contacts.Add(newContact);
         }
 
-        public void DisplayContact()
+        public void DisplayAllContacts()
         {
-            if (contact != null)
+            if (contacts.Count > 0)
             {
-                Console.WriteLine($"First Name: {contact.firstName}");
-                Console.WriteLine($"Last Name: {contact.lastName}");
-                Console.WriteLine($"Address: {contact.address}");
-                Console.WriteLine($"City: {contact.city}");
-                Console.WriteLine($"State: {contact.state}");
-                Console.WriteLine($"Zip Code: {contact.zipCode}");
-                Console.WriteLine($"Phone Number: {contact.phoneNumber}");
-                Console.WriteLine($"Email: {contact.email}");
+                foreach (Contact person in contacts)
+                {
+                    Console.WriteLine($"\nFirst Name: {person.firstName}");
+                    Console.WriteLine($"Last Name: {person.lastName}");
+                    Console.WriteLine($"Address: {person.address}");
+                    Console.WriteLine($"City: {person.city}");
+                    Console.WriteLine($"State: {person.state}");
+                    Console.WriteLine($"Zip Code: {person.zipCode}");
+                    Console.WriteLine($"Phone Number: {person.phoneNumber}");
+                    Console.WriteLine($"Email: {person.email}\n");
+                }   
+            }
+            else
+            {
+                Console.Write("\nAddress Book is empty.\n");
             }
         }
 
@@ -48,7 +69,9 @@
             Console.WriteLine("Enter the last name of the contact you want to edit:");
             string lastNameToEdit = Console.ReadLine();
 
-            if (contact != null && contact.firstName == firstNameToEdit && contact.lastName == lastNameToEdit)
+            Contact contactToEdit = SearchContact(firstNameToEdit, lastNameToEdit);
+
+            if (contactToEdit != null)
             {
                 Console.WriteLine("Enter the contact's new first name:");
                 string newFirstName = Console.ReadLine();
@@ -67,47 +90,55 @@
                 Console.WriteLine("Enter the contact's new email:");
                 string newEmail = Console.ReadLine();
 
-                contact.firstName = newFirstName;
-                contact.lastName = newLastName;
-                contact.address = newAddress;
-                contact.city = newCity;
-                contact.state = newState;
-                contact.zipCode = newZipCode;
-                contact.phoneNumber = newPhoneNumber;
-                contact.email = newEmail;
+                contactToEdit.firstName = newFirstName;
+                contactToEdit.lastName = newLastName;
+                contactToEdit.address = newAddress;
+                contactToEdit.city = newCity;
+                contactToEdit.state = newState;
+                contactToEdit.zipCode = newZipCode;
+                contactToEdit.phoneNumber = newPhoneNumber;
+                contactToEdit.email = newEmail;
 
                 Console.WriteLine("Contact updated successfully.");
             }
             else
             {
-                Console.WriteLine("Contact not found.");
+                Console.WriteLine("No matching contact found to Edit.");
             }
         }
 
         public void DeleteContact()
         {
-            if (contact != null)
-            {
-                Console.WriteLine("Enter the first name of the contact you want to delete:");
-                string firstNameToEdit = Console.ReadLine();
-                Console.WriteLine("Enter the last name of the contact you want to delete:");
-                string lastNameToEdit = Console.ReadLine();
+            Console.Write("Enter first name of person to delete: ");
+            string firstNameToDelete = Console.ReadLine();
 
-                if (contact != null && contact.firstName == firstNameToEdit && contact.lastName == lastNameToEdit)
-                {
-                    this.contact = null;
-                    Console.Write("\nDeleted Successfully!\n");
-                }
-                else
-                {
-                    Console.Write("\nNo such person found!\n");
-                }
+            Console.Write("Enter last name of person to delete: ");
+            string lastNameToDelete = Console.ReadLine();
+
+            Contact contactToDelete = SearchContact(firstNameToDelete, lastNameToDelete);
+
+            if (contactToDelete != null)
+            {
+                contacts.Remove(contactToDelete);
+                Console.WriteLine("\nDeleted Successfully!");
             }
             else
             {
-                Console.Write("\nNo such person found!\n");
+                Console.WriteLine("\nNo matching contact fount to delete!");
             }
         }
 
+
+        public Contact SearchContact(string firstName, string lastName)
+        {
+            foreach (Contact contact in contacts)
+            {
+                if (contact.firstName == firstName && contact.lastName == lastName)
+                {
+                    return contact;
+                }
+            }
+            return null;
+        }
     }
 }
