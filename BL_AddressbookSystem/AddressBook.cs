@@ -103,7 +103,7 @@
             }
             else
             {
-                Console.WriteLine("No matching contact found to Edit.");
+                Console.WriteLine("No matching contact found to edit.");
             }
         }
 
